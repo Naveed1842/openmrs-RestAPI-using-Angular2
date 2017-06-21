@@ -11,28 +11,32 @@ import 'rxjs/add/observable/of';
 import { IPatient } from './patient';
 
 @Injectable()
-export class PatientService {
-   
+export class PatientService 
+{
+   //link to my localhost machine
     private baseUrl = 'http://localhost:8092/openmrs-standalone/ws/rest/v1/concept';
 
     constructor(private http: Http) { }
 
-    getPatient(): Observable<IPatient[]> 
+    getPatient():Observable<IPatient[]> 
     {
-        let username: string = 'admin';
-       let password: string = 'Admin123';
+           let username: string = 'admin';
+          let password: string = 'Admin123';
+          let body = JSON.stringify({username,password});
        let headerOptions = {
-                 'Accept': `application/json`,
-                'Access-Control-Allow-Credentials': 'true',
-                'Authorization': 'Basic ' + btoa(username + ":" + password)
-             };
-             let headers = new Headers(headerOptions );
+                              'Accept': `application/json`,
+                               'Access-Control-Allow-Credentials': 'true',
+                               'Authorization': 'Basic ' + btoa(username + ":" + password)
+                              };
+   let headers = new Headers(headerOptions );
+  
 
 
-        return this.http.get(this.baseUrl,{ headers: headers})
+        return this.http.get(this.baseUrl,{ headers:headers})
             .map(this.extractData)
             .do(data => console.log('getPatients: ' + JSON.stringify(data)))
             .catch(this.handleError);
+            
     }
     
     private extractData(response: Response) {
